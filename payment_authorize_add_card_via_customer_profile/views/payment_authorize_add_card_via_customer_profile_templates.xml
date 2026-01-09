@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_methods2" name="Payment Methods (Add via Customer Profile)">
+        <t t-call="portal.frontend_layout">
+            <t t-set="page_title" t-value="'Payment Methods'"/>
+            <t t-set="additional_title"><t t-esc="page_title"/></t>
+            <div class="wrap">
+                <div class="container">
+                    <t t-call="payment.portal_breadcrumb"/>
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <h2>My Saved Payment Methods</h2>
+                            <div class="alert alert-info">
+                                <strong>Add Payment Method via Customer Profile</strong>
+                                <br/>
+                                This page allows you to add payment methods without triggering a validation transaction.
+                                Your card details are securely stored in Authorize.net using their Customer Profile system.
+                            </div>
+                            <t t-if="providers or tokens" t-call="payment.manage"/>
+                            <div t-else="" class="alert alert-warning">
+                                <p><strong>No suitable payment provider could be found.</strong></p>
+                                <p>If you believe that it is an error, please contact website administrator.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

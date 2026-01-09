@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Authorize Add Card Assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/payment_authorize_add_card_via_customer_profile/static/src/js/add_card_form.js"/>
+        </xpath>
+    </template>
+    
+    <template id="add_card_form" name="Add Authorize.net Card Form">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False"/>
+            <t t-set="head">
+                <t t-call-assets="web.assets_frontend" t-css="False"/>
+            </t>
+            <div class="o_portal_my_details container mt-4">
+                <h2>Add Authorize.net Payment Method</h2>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="o_add_card_form">
+                                    <input type="hidden" id="o_add_card_provider_id" t-att-value="provider.id"/>
+                                    <input type="hidden" id="o_add_card_partner_id" t-att-value="partner.id"/>
+                                    
+                                    <div class="form-group">
+                                        <label for="o_authorize_card">Card Number</label>
+                                        <input type="text" id="o_authorize_card" class="form-control" placeholder="4111 1111 1111 1111" required maxlength="19"/>
+                                        <small class="text-muted">Enter your card number without spaces</small>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="o_authorize_month">Expiration Month</label>
+                                                <select id="o_authorize_month" class="form-control" required>
+                                                    <option value="">-- Select --</option>
+                                                    <t t-foreach="range(1, 13)" t-as="m">
+                                                        <option t-att-value="str(m).zfill(2)" t-esc="str(m).zfill(2)"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="o_authorize_year">Expiration Year</label>
+                                                <select id="o_authorize_year" class="form-control" required>
+                                                    <option value="">-- Select --</option>
+                                                    <t t-foreach="range(2024, 2035)" t-as="y">
+                                                        <option t-att-value="y" t-esc="y"/>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="o_authorize_code">CVV/CVC</label>
+                                        <input type="text" id="o_authorize_code" class="form-control" placeholder="123" required maxlength="4"/>
+                                        <small class="text-muted">3 or 4 digit security code on your card</small>
+                                    </div>
+                                    
+                                    <div id="o_add_card_error" class="alert alert-danger" style="display: none;"></div>
+                                    
+                                    <button type="button" id="o_add_card_submit" class="btn btn-primary">
+                                        Add Payment Method
+                                    </button>
+                                </form>
+                                
+                                <div id="o_add_card_success" class="alert alert-success" style="display: none;">
+                                    <h4>Payment Method Added Successfully!</h4>
+                                    <p>Your payment method has been saved and can be used for future transactions.</p>
+                                    <a href="/my/home" class="btn btn-secondary">Back to My Account</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Security Information</h5>
+                                <p class="card-text">
+                                    Your card information is securely transmitted using Authorize.net's 
+                                    Accept.js tokenization service. We never store your raw card details 
+                                    on our servers.
+                                </p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        This will add your card to your Authorize.net customer profile 
+                                        for use in future transactions. No charges will be made during this 
+                                        process.
+                                    </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

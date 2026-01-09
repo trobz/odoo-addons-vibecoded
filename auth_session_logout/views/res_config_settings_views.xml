@@ -1,0 +1,87 @@
+<odoo>
+    <data>
+        <!-- Settings view for Force Logout Token -->
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.auth.session.logout</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Force Session Logout" string="Force Session Logout" data-key="auth_session_logout">
+                        <h2>Force Session Logout</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auth_session_logout_token" password="True" readonly="True"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="auth_session_logout_token"/>
+                                    <div class="text-muted">
+                                        Secure token used to authenticate force logout API requests
+                                    </div>
+                                    <div class="text-muted">
+                                        Only visible to system administrators
+                                    </div>
+                                    <div class="mt8">
+                                        <button name="action_generate_token" 
+                                                type="object" 
+                                                class="btn btn-primary btn-sm"
+                                                attrs="{'invisible': [('auth_session_logout_token', '!=', False)]}">
+                                            <i class="fa fa-refresh"/> Generate Token
+                                        </button>
+                                        <button name="action_generate_token" 
+                                                type="object" 
+                                                class="btn btn-secondary btn-sm ml8"
+                                                attrs="{'invisible': [('auth_session_logout_token', '=', False)]}">
+                                            <i class="fa fa-refresh"/> Regenerate Token
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt16">
+                            <div class="col-12">
+                                <h3>API Usage</h3>
+                                <div class="alert alert-info">
+                                    <strong>Endpoint:</strong> <code>GET /web/session/force_logout</code><br/>
+                                    <strong>Parameters:</strong>
+                                    <ul class="mt8 mb0">
+                                        <li><code>token</code> - The secure token configured above</li>
+                                        <li><code>user</code> - User login or email to logout</li>
+                                    </ul>
+                                </div>
+                                <div class="alert alert-success">
+                                    <strong>Example:</strong><br/>
+                                    <code>curl -X GET "https://your-odoo.com/web/session/force_logout?token=YOUR_TOKEN&user=john.doe@example.com"</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Menu item for audit logs -->
+        <record id="action_auth_session_logout_audit" model="ir.actions.act_window">
+            <field name="name">Force Logout Audit</field>
+            <field name="res_model">auth.session.logout.audit</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No force logout audit logs yet
+                </p>
+                <p>
+                    Audit logs will be created when force logout operations are performed.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu item -->
+        <menuitem id="menu_auth_session_logout_audit"
+                  name="Force Logout Audit"
+                  parent="base.menu_users"
+                  action="action_auth_session_logout_audit"
+                  sequence="20"
+                  groups="auth_session_logout.group_audit_user"/>
+    </data>
+</odoo>

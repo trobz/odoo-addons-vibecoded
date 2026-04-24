@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_layout_content_only" inherit_id="portal.portal_layout">
+        <xpath expr="//t[@t-set='is_portal']" position="after">
+            <t t-set="no_header" t-value="content_only"/>
+            <t t-set="no_footer" t-value="content_only"/>
+        </xpath>
+    </template>
+</odoo>
